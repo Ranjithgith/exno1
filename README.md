@@ -206,6 +206,16 @@ print("\nAll operations completed successfully.")
 
 ### SUMMARY:
 
+The process begins by importing the libraries pandas (for handling tables), numpy (for numerical operations) and zscore from scipy (for outlier detection). The loan dataset is then loaded from a CSV file into a DataFrame, which holds 367 loan applicants and 12 columns such as Gender, ApplicantIncome, LoanAmount and Credit_History. The data is inspected with df.info(), which shows each column’s data type and non-null count. For example, Credit_History has only 338 non-null values out of 367, so some entries are missing.
+
+Next, missing values (NaN) are counted with df.isnull().sum(). Credit_History has 29 missing, Self_Employed has 23, Gender has 11, Dependents has 10, Loan_Amount_Term has 6 and LoanAmount has 5. These are removed with df.dropna(), which deletes every row containing at least one missing value. For example, an applicant whose Credit_History is blank is dropped entirely, even if all their other details are filled in. This reduces the data from 367 to 289 rows and is saved as cleaned_data.csv.
+
+After that, the numeric columns (ApplicantIncome, CoapplicantIncome, LoanAmount, Loan_Amount_Term and Credit_History) are selected, because outliers only apply to numbers. Outliers are unusually extreme values. For example, an applicant with an income of 80,000 when most earn around 4,000 would distort the analysis.
+
+The IQR method calculates Q1 (25th percentile), Q3 (75th percentile) and IQR = Q3 − Q1. Any value below Q1 − 1.5×IQR or above Q3 + 1.5×IQR is treated as an outlier, and its row is removed. For example, a very high LoanAmount or an unusual Loan_Amount_Term (such as 180 when most are 360) gets removed. This leaves 188 rows, saved as iqr_cleaned_data.csv.
+
+The Z-score method measures how many standard deviations a value is from the column’s mean. Rows with a Z-score of 3 or more (in absolute value) are removed. This is more lenient and leaves 271 rows, saved as zscore_cleaned_data.csv.
+
 
             
 # Result
